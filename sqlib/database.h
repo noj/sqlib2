@@ -12,8 +12,8 @@ namespace sqlib {
 
 class database {
  public:
-  database(const char* filename) {
-    sqlite3_open(filename, &m_sqlite);
+  database(const std::string & filename) {
+    sqlite3_open(filename.c_str (), &m_sqlite);
   }
 
   database(database&& rhs)

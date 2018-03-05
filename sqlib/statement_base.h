@@ -32,6 +32,10 @@ inline void extract_sql_column(sqlite3_stmt* stmt, int col, std::int64_t& dest) 
   dest = sqlite3_column_int64(stmt, col);
 }
 
+inline void extract_sql_column(sqlite3_stmt* stmt, int col, std::uint64_t& dest) {
+  dest = sqlite3_column_int64(stmt, col);
+}
+
 inline void extract_sql_column(sqlite3_stmt* stmt, int col, double& dest) {
   dest = sqlite3_column_double(stmt, col);
 }
@@ -53,6 +57,10 @@ inline void bind_arg(sqlite3_stmt* stmt, int slot, const int& arg) {
 }
 
 inline void bind_arg(sqlite3_stmt* stmt, int slot, const std::int64_t& arg) {
+  sqlite3_bind_int64(stmt, slot, arg);
+}
+
+inline void bind_arg(sqlite3_stmt* stmt, int slot, const std::uint64_t& arg) {
   sqlite3_bind_int64(stmt, slot, arg);
 }
 
@@ -149,7 +157,7 @@ class statement_base {
     assert(m_prepared == 0);
     int res = sqlite3_prepare(m_db, m_sql.c_str(), -1, &m_prepared, 0);
     if(res != SQLITE_OK)
-      throw prepare_error(m_sql);
+      throw prepare_error(m_sql, res);
   }
 
   int step() {
@@ -160,13 +168,13 @@ class statement_base {
       case SQLITE_DONE:
         return res;
       case SQLITE_ERROR:
-        throw execute_error(sqlite3_errmsg(m_db));
+        throw execute_error(res);
       case SQLITE_BUSY:
         throw busy_error();
       case SQLITE_MISUSE:
         throw misuse_error();
       default:
-        throw sql_error(sqlite3_errmsg(m_db));
+        throw sql_error(res);
     }
   }
 
