@@ -55,6 +55,22 @@ class database {
     sqlite3_trace(m_sqlite, 0, 0);
   }
 
+  template <typename Fn>
+  void transaction(Fn && fn) {
+    execute_sql ("BEGIN");
+    try {
+      fn ();
+
+      execute_sql ("COMMIT");
+    } catch(const std::exception & e) {
+      execute_sql("ROLLBACK");
+      throw;
+    } catch(...) {
+      execute_sql("ROLLBACK");
+      throw;
+    }
+  }
+
  private:
   static void trace_fn(void* s, const char* msg) {
     (*static_cast<std::ostream*>(s)) << msg << '\n';

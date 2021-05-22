@@ -107,16 +107,26 @@ int main() {
 
     {
       // Start a transaction
-      transaction_lock lock(db1);
-      SQLIB_CHECK(insert(1,"first").affected_rows() == 1);
-      SQLIB_CHECK(insert(2,"second").affected_rows() == 1);
+      bool caught = false;
 
-      query1();
-      CHECK_ROW1(query1, 1);
-      CHECK_ROW1(query1, 2);
-      CHECK_DONE(query1);
+      try {
+        db1.transaction([&]() {
+          SQLIB_CHECK(insert(1,"first").affected_rows() == 1);
+          SQLIB_CHECK(insert(2,"second").affected_rows() == 1);
 
-      // Leave scope without commit
+          query1();
+          CHECK_ROW1(query1, 1);
+          CHECK_ROW1(query1, 2);
+          CHECK_DONE(query1);
+
+          // Leave scope without commit
+          throw "up";
+        });
+      } catch(...) {
+        caught = true;
+      }
+
+      SQLIB_REQUIRE(caught);
     }
 
     query1();
@@ -124,15 +134,15 @@ int main() {
 
     {
       // Start another transaction
-      transaction_lock lock(db1);
-      insert(1,"first");
+      db1.transaction([&]() {
+        insert(1,"first");
 
-      query1();
-      CHECK_ROW1(query1, 1);
-      CHECK_DONE(query1);
+        query1();
+        CHECK_ROW1(query1, 1);
+        CHECK_DONE(query1);
 
-      query1();
-      lock.commit();
+        query1();
+      });
 
       CHECK_ROW1(query1, 1);
       CHECK_DONE(query1);
