@@ -1,5 +1,4 @@
-#ifndef SQLIB_DYNQUERY_H
-#define SQLIB_DYNQUERY_H
+#pragma once
 
 #include "statement_base.h"
 
@@ -84,5 +83,3 @@ class dynquery : public statement_base {
 };
 
 } // sqlib
-
-#endif

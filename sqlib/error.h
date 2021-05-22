@@ -1,5 +1,4 @@
-#ifndef SQLIB_ERROR_H
-#define SQLIB_ERROR_H
+#pragma once
 
 #include <stdexcept>
 #include <sqlite3.h>
@@ -55,5 +54,3 @@ class misuse_error : public sql_error {
 };
 
 } // sqlib
-
-#endif

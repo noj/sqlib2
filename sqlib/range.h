@@ -1,5 +1,4 @@
-#ifndef SQLIB_RANGE_H
-#define SQLIB_RANGE_H
+#pragma once
 
 #include "query.h"
 #include "dynquery.h"
@@ -95,7 +94,7 @@ class dynrow_iterator : public std::iterator<std::input_iterator_tag, dynrow> {
   bool operator==(const dynrow_iterator& rhs) const {
     return m_query == rhs.m_query;
   }
-        
+
  private:
   dynrow_iterator(dynquery* qry)
    : m_query(qry) {
@@ -118,5 +117,3 @@ inline dynrow_iterator end(dynquery& qry) {
 }
 
 } // sqlib
-
-#endif

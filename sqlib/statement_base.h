@@ -1,5 +1,4 @@
-#ifndef SQLIB_STATEMENT_BASE_H
-#define SQLIB_STATEMENT_BASE_H
+#pragma once
 
 #include "database.h"
 #include "error.h"
@@ -184,5 +183,3 @@ class statement_base {
 };
 
 } // sqlib
-
-#endif

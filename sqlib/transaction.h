@@ -1,5 +1,4 @@
-#ifndef SQLIB_TRANSACTION_H
-#define SQLIB_TRANSACTION_H
+#pragma once
 
 #include "database.h"
 
@@ -50,5 +49,3 @@ class transaction_lock {
 };
 
 } // sqlib
-
-#endif

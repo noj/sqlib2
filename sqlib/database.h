@@ -1,5 +1,4 @@
-#ifndef SQLIB_DATABASE_H
-#define SQLIB_DATABASE_H
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -65,5 +64,3 @@ class database {
 };
 
 } // sqlib
-
-#endif

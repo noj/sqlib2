@@ -1,5 +1,4 @@
-#ifndef SQLIB_QUERY_H
-#define SQLIB_QUERY_H
+#pragma once
 
 #include "statement_base.h"
 
@@ -121,5 +120,3 @@ class query : public statement_base {
 };
 
 } // sqlib
-
-#endif

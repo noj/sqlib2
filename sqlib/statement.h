@@ -1,5 +1,4 @@
-#ifndef SQLIB_STATEMENT_H
-#define SQLIB_STATEMENT_H
+#pragma once
 
 #include "statement_base.h"
 
@@ -33,5 +32,3 @@ class statement : public statement_base {
 };
 
 } // sqlib
-
-#endif
