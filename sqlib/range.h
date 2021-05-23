@@ -28,7 +28,7 @@ class row_iterator
     ++(*m_query);
 
     if(!*m_query)
-      m_query = 0;
+      m_query = nullptr;
 
     return *this;
   }
@@ -50,7 +50,7 @@ class row_iterator
   row_iterator(query<Cols...>* qry)
    : m_query(qry) {
     if(m_query && !*m_query)
-      m_query = 0;
+      m_query = nullptr;
   }
 
   template<class... Cols2>

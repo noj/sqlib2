@@ -7,8 +7,7 @@ namespace sqlib {
 class dynrow {
  public:
   explicit dynrow(sqlite3_stmt* prepared)
-   : m_prepared(prepared)
-   , m_next_column(0) {
+   : m_prepared(prepared) {
   }
 
   template<class H, class... T>
@@ -21,7 +20,7 @@ class dynrow {
 
  private:
   sqlite3_stmt* m_prepared;
-  int m_next_column;
+  int m_next_column = 0;
 };
 
 class dynquery : public statement_base {
@@ -29,8 +28,7 @@ class dynquery : public statement_base {
   dynquery() = default;
 
   dynquery(database& db, const std::string& sql)
-   : statement_base(db, sql)
-   , m_has_data(false) {
+   : statement_base(db, sql) {
   }
 
   dynquery(dynquery&& rhs)
@@ -46,7 +44,7 @@ class dynquery : public statement_base {
     return *this;
   }
 
-  dynquery& operator=(const dynquery&& rhs) {
+  dynquery& operator=(dynquery&& rhs) {
     statement_base::operator=(std::move(rhs));
     m_has_data = false;
     return *this;
@@ -79,7 +77,7 @@ class dynquery : public statement_base {
     m_has_data = statement_base::step() == SQLITE_ROW;
   }
 
-  bool m_has_data;
+  bool m_has_data = false;
 };
 
 } // sqlib

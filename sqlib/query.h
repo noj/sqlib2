@@ -41,18 +41,15 @@ class query : public statement_base {
   query() = default;
 
   query(database& db, const std::string& sql)
-   : statement_base(db, sql)
-   , m_has_data(false) {
+   : statement_base(db, sql) {
   }
 
   query(query&& rhs)
-   : statement_base(std::move(rhs))
-   , m_has_data(false) {
+   : statement_base(std::move(rhs)) {
   }
 
   query(const query& rhs)
-   : statement_base(rhs)
-   , m_has_data(false) {
+   : statement_base(rhs) {
   }
 
   query& operator=(query&& rhs) {
@@ -116,7 +113,7 @@ class query : public statement_base {
   };
 
   row_type m_row;
-  bool     m_has_data;
+  bool     m_has_data = false;
 };
 
 } // sqlib

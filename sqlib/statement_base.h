@@ -79,30 +79,25 @@ inline void bind_arg(sqlite3_stmt* stmt, int slot, const null_type& arg) {
 
 class statement_base {
  public:
-  statement_base()
-   : m_prepared(0)
-   , m_db(0) {
-  }
+  statement_base() = default;
 
   statement_base(statement_base&& rhs)
    : m_prepared(rhs.m_prepared)
    , m_db(rhs.m_db)
    , m_sql(std::move(rhs.m_sql)) {
-    rhs.m_prepared = 0;
-    rhs.m_db = 0;
+    rhs.m_prepared = nullptr;
+    rhs.m_db = nullptr;
   }
 
   statement_base(const statement_base& rhs)
-   : m_prepared(0)
-   , m_db(rhs.m_db)
+   : m_db(rhs.m_db)
    , m_sql(rhs.m_sql) {
     if(rhs.m_prepared) // The rhs statement had a valid prepared statement, let's duplicate it.
       prepare();
   }
 
   statement_base(database& db, const std::string& sql)
-   : m_prepared(0)
-   , m_db(db.get())
+   : m_db(db.get())
    , m_sql(sql) {
     prepare();
   }
@@ -153,8 +148,8 @@ class statement_base {
   }
 
   void prepare() {
-    assert(m_prepared == 0);
-    int res = sqlite3_prepare(m_db, m_sql.c_str(), -1, &m_prepared, 0);
+    assert(m_prepared == nullptr);
+    int res = sqlite3_prepare(m_db, m_sql.c_str(), -1, &m_prepared, nullptr);
     if(res != SQLITE_OK)
       throw prepare_error(m_sql, res);
   }
@@ -177,8 +172,8 @@ class statement_base {
     }
   }
 
-  sqlite3_stmt* m_prepared;
-  sqlite3*      m_db;
+  sqlite3_stmt* m_prepared = nullptr;
+  sqlite3*      m_db = nullptr;
   std::string   m_sql;
 };
 

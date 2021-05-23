@@ -17,7 +17,7 @@ class database {
 
   database(database&& rhs)
    : m_sqlite(rhs.m_sqlite) {
-    rhs.m_sqlite = 0;
+    rhs.m_sqlite = nullptr;
   }
 
   ~database() {
@@ -40,7 +40,7 @@ class database {
   void execute_sql(const std::string& sql) {
     char* errmsg;
 
-    if(sqlite3_exec(m_sqlite, sql.c_str(), 0, 0, &errmsg) != SQLITE_OK) {
+    if(sqlite3_exec(m_sqlite, sql.c_str(), nullptr, nullptr, &errmsg) != SQLITE_OK) {
       sql_error ex(errmsg);
       sqlite3_free(errmsg);
       throw ex;
@@ -52,7 +52,7 @@ class database {
   }
 
   void disable_trace() {
-    sqlite3_trace(m_sqlite, 0, 0);
+    sqlite3_trace(m_sqlite, nullptr, nullptr);
   }
 
   template <typename Fn>
